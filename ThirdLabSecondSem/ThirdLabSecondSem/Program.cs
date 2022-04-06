@@ -4,6 +4,7 @@
     {
         static void Main(string[] args)
         {
+            // Добавление преподавателей
             IS.AddTeacher("Петров Петр Петрович", "ИКИТ", "Zoom");
             IS.AddTeacher("Иванов Иван Иванович", "ИКИТ", "Zoom");
             IS.AddTeacher("Паранов Иван Лаврентьевич", "ИКИТ", "Zoom");
@@ -18,14 +19,31 @@
 
             IS.AddTeacher("AAasad a a", "ИКИТ", "Совсем другое");
 
-
             foreach (var teacher in IS.Teachers)
-                Console.WriteLine($"{IS.GetShortName(teacher)} - {teacher.Institute} - {teacher.Service}");
+            {
+                Console.Write($"{IS.GetShortName(teacher)} - {teacher.Institute} - ");
+                Console.ForegroundColor = getColor(teacher.Service);
+                Console.WriteLine(teacher.Service);
+                Console.ForegroundColor = ConsoleColor.White;
+            }
 
             Console.WriteLine();
 
             foreach (var item in IS.TOP())
-                Console.WriteLine(item);
+            {
+                Console.ForegroundColor = getColor(item.Service);
+                Console.Write($"{item.Service} - ");
+                Console.ForegroundColor = ConsoleColor.White;
+                Console.WriteLine(item.Count);
+            }
+                
+        }
+
+        /* Получаем цвет текста в консоле на основе хэш кода строки 
+          (цвет будет каждый раз разный, правда иногда он может быть таким же, как цвет консоли) */
+        static ConsoleColor getColor(string service)
+        {
+            return (ConsoleColor)(Math.Abs(service.GetHashCode()) % 15);
         }
     }
 }
